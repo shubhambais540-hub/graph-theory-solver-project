@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Graph Theory Solver</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f2f4f7;
+}
+header{
+    background:#1f3c88;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+main{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:20px;
+}
+.card{
+    background:white;
+    width:330px;
+    margin:10px;
+    padding:20px;
+    border-radius:8px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.card h2{
+    margin-top:0;
+    color:#1f3c88;
+}
+input, textarea{
+    width:100%;
+    padding:8px;
+    margin:8px 0;
+}
+button{
+    width:100%;
+    padding:10px;
+    background:#1f3c88;
+    color:white;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:16px;
+}
+button:hover{
+    background:#142850;
+}
+pre{
+    background:#eef2ff;
+    padding:10px;
+    height:160px;
+    overflow-y:auto;
+}
+footer{
+    background:#1f3c88;
+    color:white;
+    text-align:center;
+    padding:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>SHUBHAM BAIS</h1>
+    <h1>PROJECT NAME</h1>
+    <h1>(Graph Theory solver )</h1>
+    <p>Single File | HTML • CSS • JavaScript</p>
+</header>
+
+<main>
+
+    <div class="card">
+        <h2>Graph Input</h2>
+        <label>Number of Vertices</label>
+        <input type="number" id="vertices" min="1">
+
+        <label>Adjacency Matrix</label>
+        <textarea id="matrix" rows="5"
+        placeholder="Example:
+0 1 1
+1 0 0
+1 0 0"></textarea>
+
+        <button onclick="createGraph()">Create Graph</button>
+    </div>
+
+    <div class="card">
+        <h2>Operations</h2>
+        <button onclick="degree()">Find Degree</button>
+        <button onclick="bfs()">BFS Traversal</button>
+        <button onclick="dfs()">DFS Traversal</button>
+    </div>
+
+    <div class="card">
+        <h2>Output</h2>
+        <pre id="output"></pre>
+    </div>
+
+</main>
+
+<footer>
+    <p>© Graph Theory Solver | College Project</p>
+</footer>
+
+<script>
+let graph = [];
+
+function createGraph(){
+    let matrixText = document.getElementById("matrix").value.trim().split("\n");
+    graph = matrixText.map(row => row.split(" ").map(Number));
+    document.getElementById("output").textContent =
+        "Graph created successfully!";
+}
+
+function degree(){
+    let res = "";
+    for(let i=0;i<graph.length;i++){
+        let deg = graph[i].reduce((a,b)=>a+b,0);
+        res += "Degree of vertex " + i + " = " + deg + "\n";
+    }
+    document.getElementById("output").textContent = res;
+}
+
+function bfs(){
+    let visited = Array(graph.length).fill(false);
+    let q = [0];
+    visited[0] = true;
+    let res = "BFS: ";
+
+    while(q.length){
+        let node = q.shift();
+        res += node + " ";
+        for(let i=0;i<graph.length;i++){
+            if(graph[node][i]==1 && !visited[i]){
+                visited[i] = true;
+                q.push(i);
+            }
+        }
+    }
+    document.getElementById("output").textContent = res;
+}
+
+function dfs(){
+    let visited = Array(graph.length).fill(false);
+    let res = "DFS: ";
+
+    function dfsVisit(v){
+        visited[v] = true;
+        res += v + " ";
+        for(let i=0;i<graph.length;i++){
+            if(graph[v][i]==1 && !visited[i]){
+                dfsVisit(i);
+            }
+        }
+    }
+    dfsVisit(0);
+    document.getElementById("output").textContent = res;
+}
+</script>
+
+</body>
+</html>
